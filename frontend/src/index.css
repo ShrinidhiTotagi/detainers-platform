@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.home-container {
+  text-align: center;
+  padding: 20px;
+  background: #f9fafb;
+  min-height: 100vh;
+}
+
+.home-banner {
+  position: relative; /* needed for pseudo-element */
+  background: linear-gradient(135deg, #0077b6, #00b4d8);
+  color: white;
+  padding: 60px 20px;
+  border-radius: 15px;
+  margin-bottom: 40px;
+  overflow: hidden; /* to clip the blur */
+}
+
+/* Add blur overlay */
+.home-banner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: inherit; /* same gradient */
+  filter: blur(10px); /* adjust the blur intensity */
+  z-index: 0;
+}
+
+/* Ensure content is above the blur */
+.home-banner * {
+  position: relative;
+  z-index: 1;
+}
+
+
+.brand-name {
+  font-weight: bold;
+  color: #fff700;
+}
+
+.category-section h2 {
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+}
+
+.category-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+}
+
+.category-card {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  border-radius: 15px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease;
+}
+
+.category-card:hover {
+  transform: scale(1.05);
+}
+
+.category-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.category-overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 70px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.category-icon {
+  font-size: 1.6rem;
+}
+
+.category-name {
+  font-size: 1rem;
+  margin-top: 5px;
+  font-weight: 600;
+}
