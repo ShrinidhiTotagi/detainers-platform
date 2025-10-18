@@ -1,13 +1,14 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // <-- import navigate
 import { AuthContext } from "../context/AuthContext";
 import { FaCheckCircle } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const mainCategories = [
   {
-    name: "Home Improvement & Maintenance",
+    name: "Home Maintenance",
     key: "home-improvement",
-    desc: "Plumbing, Electrical, Painting, Cleaning & more.",
+    desc: "🛠️ Plumbing, Electrical, Painting, Cleaning & more.",
     image: "/assets/home-improvement.jpg",
     location: "Bangalore",
     servicesAvailable: 120,
@@ -17,7 +18,7 @@ const mainCategories = [
   {
     name: "Home Health Care",
     key: "home-health-care",
-    desc: "Skilled Nursing, Personal Care, Therapy & more.",
+    desc: "💉 Skilled Nursing, Personal Care, Therapy & more.",
     image: "/assets/home-health-care.jpg",
     location: "Delhi",
     servicesAvailable: 80,
@@ -27,7 +28,7 @@ const mainCategories = [
   {
     name: "Business Services (B2B)",
     key: "business-services",
-    desc: "IT, HR, Accounting, Marketing, Logistics & more.",
+    desc: "💼 IT, HR, Accounting, Marketing, Logistics & more.",
     image: "/assets/business-services.jpg",
     location: "Bangalore",
     servicesAvailable: 50,
@@ -37,7 +38,7 @@ const mainCategories = [
   {
     name: "Personal Services",
     key: "personal-services",
-    desc: "Beauty, Fitness, Childcare, Pet Care & more.",
+    desc: "💅 Beauty, Fitness, Childcare, Pet Care & more.",
     image: "/assets/personal-services.jpg",
     location: "Mumbai",
     servicesAvailable: 60,
@@ -49,6 +50,7 @@ const mainCategories = [
 function Home() {
   const [search, setSearch] = useState("");
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate(); // <-- initialize navigate
 
   const filteredCategories = mainCategories.filter((cat) => {
     return (
@@ -59,81 +61,131 @@ function Home() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-100 font-sans">
-      {/* Banner */}
-      <div
-        className="relative bg-cover bg-center min-h-[50vh] flex items-center justify-center text-center"
-        style={{ backgroundImage: "url('/assets/banner.webp')" }}
+    <div className="min-h-screen bg-blue-50 font-sans">
+      {/* 🌊 Animated Banner Section */}
+      <motion.div
+        className="relative min-h-[60vh] flex flex-col items-center justify-center text-center overflow-hidden"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.2 }}
       >
-        {/* Lighter overlay */}
-        <div className="absolute inset-0 bg-white/30"></div>
-        <div className="relative z-10 p-5 max-w-3xl">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3 animate-fadeIn">
-            Trusted Services at Your Doorstep
+        {/* Animated Blue Gradient Background */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-blue-600 via-sky-500 to-cyan-400"
+          animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+          style={{ backgroundSize: "200% 200%", filter: "brightness(0.9)" }}
+        />
+
+        <div className="absolute inset-0 bg-black/30"></div>
+
+        {/* Banner Text */}
+        <motion.div
+          className="relative z-10 p-6 text-white max-w-2xl"
+          initial={{ y: -30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1 }}
+        >
+          <h1 className="text-4xl md:text-5xl font-bold mb-3 drop-shadow-lg">
+            💎 Premium Services at Your Doorstep
           </h1>
-          <p className="text-gray-800 text-lg mb-6 animate-fadeIn">
-            Book expert professionals for all your daily needs <br />
-            fast, safe, and reliable.
+          <p className="text-lg mb-6 text-blue-100">
+            Book trusted professionals for all your needs — fast, safe, and reliable ⚡
           </p>
-          {/* Unified search bar */}
-          <input
+
+          <motion.input
             type="text"
-            placeholder="Search for services, categories or locations..."
+            placeholder="🔍 Search for services, categories or locations..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full md:w-[400px] px-5 py-3 rounded-full border-none outline-none shadow-lg text-gray-700 focus:shadow-xl transition-all"
+            className="w-full md:w-[400px] px-5 py-3 rounded-full border-none outline-none shadow-lg text-gray-800"
+            whileFocus={{ scale: 1.05 }}
           />
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
-      {/* Categories */}
-      <div className="grid gap-6 p-10 max-w-6xl mx-auto grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        {filteredCategories.length > 0 ? (
-          filteredCategories.map((cat) => (
-            <Link key={cat.key} to={`/services/${cat.key}`} className="no-underline">
-              <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all cursor-pointer relative group">
+      {/* ⚡ Category Cards Section */}
+      <div
+        style={{
+          width: "100%",
+          background: "linear-gradient(135deg, #e3f2fd, #bbdefb, #90caf9)",
+          padding: "60px 5%",
+        }}
+      >
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gap: "25px",
+            width: "100%",
+          }}
+        >
+          {filteredCategories.length > 0 ? (
+            filteredCategories.map((cat) => (
+              <div
+                key={cat.key}
+                style={{
+                  background: "#fff",
+                  borderRadius: "16px",
+                  overflow: "hidden",
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                  cursor: "pointer",
+                  textAlign: "center",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "scale(1.03)";
+                  e.currentTarget.style.boxShadow = "0 8px 25px rgba(0,0,0,0.2)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "scale(1)";
+                  e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.1)";
+                }}
+              >
                 <img
                   src={cat.image}
                   alt={cat.name}
-                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                  style={{ width: "100%", height: "180px", objectFit: "cover" }}
                 />
-
-                {/* Verified icon */}
-                <div className="absolute top-3 right-3 flex items-center gap-1">
-                  {cat.verified && (
-                    <FaCheckCircle className="text-blue-500" title="Verified Provider" />
-                  )}
-                </div>
-
-                {/* Recommended tag */}
-                {user && cat.location.toLowerCase() === user.location?.toLowerCase() && (
-                  <span className="absolute top-3 left-3 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
-                    Recommended
-                  </span>
-                )}
-
-                <div className="p-5 text-center">
-                  <h3 className="text-blue-600 font-semibold mb-1">{cat.name}</h3>
-                  <span className="inline-block bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs mb-2">
-                    {cat.category}
-                  </span>
-                  <p className="text-gray-600 text-sm mb-2">{cat.desc}</p>
-                  <p className="text-gray-400 text-xs mb-1">Location: {cat.location}</p>
-                  <p className="text-gray-500 text-sm">
+                <div style={{ padding: "20px" }}>
+                  <h3 style={{ color: "#1976d2", fontSize: "1.2rem", fontWeight: "bold" }}>
+                    {cat.name}
+                  </h3>
+                  <p style={{ color: "#555", fontSize: "0.95rem", marginTop: "8px" }}>
+                    {cat.desc}
+                  </p>
+                  <p style={{ color: "#1976d2", fontWeight: "600" }}>
                     {cat.servicesAvailable}+ services available
                   </p>
-                  <button className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all">
-                    Book Now
+
+                  {/* Book Now Button navigates to category page */}
+                  <button
+                    onClick={() => navigate(`/services/${cat.key}`)}
+                    style={{
+                      marginTop: "10px",
+                      padding: "8px 16px",
+                      backgroundColor: "#1976d2",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "8px",
+                      cursor: "pointer",
+                      fontWeight: "bold",
+                      transition: "background 0.3s",
+                    }}
+                    onMouseEnter={(e) => (e.target.style.backgroundColor = "#0d47a1")}
+                    onMouseLeave={(e) => (e.target.style.backgroundColor = "#1976d2")}
+                  >
+                    Explore Services
                   </button>
                 </div>
               </div>
-            </Link>
-          ))
-        ) : (
-          <p className="col-span-full text-center text-gray-600 text-lg">
-            No services found for "{search}"
-          </p>
-        )}
+            ))
+          ) : (
+            <p style={{ textAlign: "center", color: "#444", gridColumn: "1/-1" }}>
+              No services found for "{search}"
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );

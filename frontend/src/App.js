@@ -13,6 +13,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import ProviderProfile from "./pages/ProviderProfile";
 import AdminDashboard from "./pages/AdminDashboard";
+import ServiceExplorer from "./pages/ServiceExplorer";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
               <Navbar />
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/services/explorer" element={<ServiceExplorer />} />
                 <Route path="/services" element={<Services />} />
                 <Route path="/services/:category" element={<ServiceCategory />} />
                 <Route path="/service/:id" element={<ServiceDetail />} />

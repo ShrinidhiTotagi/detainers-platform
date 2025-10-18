@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { serviceData } from "./data"; // ✅ Correct import
+import { serviceData } from "./data";
+import BookingForm from "../components/BookingForm";
+ // import your BookingForm
 
 function ServiceDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const service = serviceData[parseInt(id)];
+
+  const [selectedProvider, setSelectedProvider] = useState(null); // for modal
 
   if (!service) return <p>Service not found.</p>;
 
@@ -15,7 +19,14 @@ function ServiceDetail() {
       <div style={{ padding: "20px 40px" }}>
         <button
           onClick={() => navigate(-1)}
-          style={{ color: "#1976d2", border: "none", background: "none", cursor: "pointer", fontSize: "18px", fontWeight: "bold" }}
+          style={{
+            color: "#1976d2",
+            border: "none",
+            background: "none",
+            cursor: "pointer",
+            fontSize: "18px",
+            fontWeight: "bold"
+          }}
         >
           ← Back
         </button>
@@ -30,37 +41,72 @@ function ServiceDetail() {
       {/* Providers */}
       <div style={{ padding: "0 40px" }}>
         <h2 style={{ color: "#333", marginBottom: "15px" }}>Available Service Providers</h2>
-        <div style={{ display: "flex", overflowX: "auto", gap: "30px", paddingBottom: "30px", scrollSnapType: "x mandatory" }}>
+        <div
+          style={{
+            display: "flex",
+            overflowX: "auto",
+            gap: "30px",
+            paddingBottom: "30px",
+            scrollSnapType: "x mandatory"
+          }}
+        >
           {service.providers.map((p) => (
-            <div key={p.id} style={{ flex: "0 0 350px", background: "#fff", borderRadius: "16px", boxShadow: "0 6px 18px rgba(0,0,0,0.1)", padding: "25px", scrollSnapAlign: "center" }}>
-              {/* Header */}
-              <div style={{ textAlign: "center", marginBottom: "15px" }}>
-                <img src={p.image} alt={p.name} style={{ width: "110px", height: "110px", borderRadius: "50%", objectFit: "cover", marginBottom: "10px", border: "3px solid #1976d2" }} />
-                <h3>{p.name} {p.verified && <span style={{ color: "green" }}>✔️</span>}</h3>
-                <p style={{ color: "#777", fontSize: "0.95rem" }}>{p.location}</p>
-              </div>
+            <div
+              key={p.id}
+              style={{
+                flex: "0 0 350px",
+                background: "#fff",
+                borderRadius: "16px",
+                boxShadow: "0 6px 18px rgba(0,0,0,0.1)",
+                padding: "25px",
+                scrollSnapAlign: "center",
+                textAlign: "center"
+              }}
+            >
+              <h3>
+                {p.name} {p.verified && <span style={{ color: "green" }}>✔️</span>}
+              </h3>
+              <p style={{ color: "#777", fontSize: "0.95rem" }}>{p.location}</p>
 
-              {/* Details */}
-              <div style={{ textAlign: "center", marginBottom: "15px" }}>
-                <p style={{ fontWeight: "bold", color: "#1976d2" }}>{p.cost}</p>
-                <p style={{ color: "#444" }}>⭐ {p.rating} | {p.completed} jobs completed</p>
-              </div>
+              {p.services && p.services.length > 0 && (
+                <p style={{ color: "#444", fontSize: "0.95rem", margin: "5px 0 15px" }}>
+                  Services: {p.services.join(", ")}
+                </p>
+              )}
 
-              {/* Explore Profile Button */}
-              <div style={{ textAlign: "center", marginBottom: "10px" }}>
+              <p style={{ fontWeight: "bold", color: "#1976d2", marginTop: "5px" }}>{p.cost}</p>
+              <p style={{ color: "#444", marginBottom: "15px" }}>
+                ⭐ {p.rating} | {p.completed} jobs completed
+              </p>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                 <button
                   onClick={() => navigate(`/provider/${p.id}`)}
-                  style={{ background: "#ffa500", color: "white", border: "none", padding: "10px 25px", borderRadius: "8px", cursor: "pointer", fontSize: "15px", fontWeight: "bold" }}
+                  style={{
+                    background: "#ffa500",
+                    color: "white",
+                    border: "none",
+                    padding: "10px 25px",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                    fontSize: "15px",
+                    fontWeight: "bold"
+                  }}
                 >
                   Explore Profile
                 </button>
-              </div>
-
-              {/* Book Now */}
-              <div style={{ textAlign: "center" }}>
                 <button
-                  onClick={() => alert(`Booking ${p.name}'s service...`)}
-                  style={{ background: "#1976d2", color: "white", border: "none", padding: "12px 30px", borderRadius: "8px", cursor: "pointer", fontSize: "15px", fontWeight: "bold" }}
+                  onClick={() => setSelectedProvider(p)} // open modal
+                  style={{
+                    background: "#1976d2",
+                    color: "white",
+                    border: "none",
+                    padding: "12px 30px",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                    fontSize: "15px",
+                    fontWeight: "bold"
+                  }}
                 >
                   Book Now
                 </button>
@@ -69,6 +115,15 @@ function ServiceDetail() {
           ))}
         </div>
       </div>
+
+      {/* Booking Form Modal */}
+      {selectedProvider && (
+        <BookingForm
+          provider={selectedProvider}
+          service={service}
+          onClose={() => setSelectedProvider(null)}
+        />
+      )}
     </div>
   );
 }

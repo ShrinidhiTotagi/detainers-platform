@@ -2,12 +2,14 @@ import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 const allServices = {
-  "home-improvement": [
-    { id: 1, name: "Plumbing & Electrical", desc: "Installation, repair, and maintenance of water and electrical systems.", price: "₹500", icon: "🔧" },
-    { id: 2, name: "HVAC Services", desc: "Heating, ventilation, and air conditioning.", price: "₹800", icon: "❄️" },
-    { id: 3, name: "Cleaning Services", desc: "Regular, deep, or specialized cleaning.", price: "₹400", icon: "🧹" },
-    { id: 4, name: "Painting & Carpentry", desc: "Interior/exterior painting and woodwork.", price: "₹700", icon: "🎨" },
-  ],
+ "home-improvement": [
+  { id: 1, name: "Plumbing", desc: "Installation, repair, and maintenance of water systems.",  icon: "🔧" },
+  { id: 2, name: "Electrician", desc: "Installation, repair, and maintenance of electrical systems.", icon: "⚡" }, // <-- added icon
+  { id: 2, name: "HVAC Services", desc: "Heating, ventilation, and air conditioning.",  icon: "❄️" },
+  { id: 3, name: "Cleaning Services", desc: "Regular, deep, or specialized cleaning.",  icon: "🧹" },
+  { id: 4, name: "Painting & Carpentry", desc: "Interior/exterior painting and woodwork.", icon: "🎨" },
+],
+
   "home-health-care": [
     { id: 10, name: "Skilled Nursing", desc: "Medical care by a licensed nurse.", price: "₹1000", icon: "🏥" },
     { id: 11, name: "Personal Care", desc: "Assistance with bathing, dressing, and grooming.", price: "₹800", icon: "🛁" },
@@ -28,42 +30,79 @@ function ServiceCategory() {
   const navigate = useNavigate();
 
   return (
-    <div style={{ padding: "40px 20px", minHeight: "100vh", background: "#f8f9fa" }}>
-      <h2 style={{ marginBottom: "30px", color: "#1976d2" }}>
-        {category.replace("-", " ").toUpperCase()}
-      </h2>
+    <div
+      style={{
+        minHeight: "100vh",
+        width: "100%",
+        background: "linear-gradient(135deg, #e3f2fd, #bbdefb, #90caf9)",
+        padding: "50px 0",
+      }}
+    >
+      <div
+        style={{
+          textAlign: "center",
+          marginBottom: "40px",
+          color: "#0d1b2a",
+        }}
+      >
+        <h2 style={{ fontSize: "2rem", fontWeight: "700", letterSpacing: "1px" }}>
+          {category.replace("-", " ").toUpperCase()}
+        </h2>
+        <p style={{ color: "#1b263b", fontSize: "1.1rem" }}>
+          Explore our best services in this category 🚀
+        </p>
+      </div>
 
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-        gap: "20px"
-      }}>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+          gap: "25px",
+          padding: "0 5%",
+        }}
+      >
         {services.map((s) => (
           <div
             key={s.id}
             onClick={() => navigate(`/service/${s.id}`)}
             style={{
               background: "#fff",
-              borderRadius: "12px",
-              boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
-              padding: "20px",
-              transition: "transform 0.3s, box-shadow 0.3s",
+              borderRadius: "15px",
+              boxShadow: "0 5px 20px rgba(0,0,0,0.1)",
+              padding: "25px 20px",
+              transition: "all 0.3s ease",
               cursor: "pointer",
               textAlign: "center",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "scale(1.03)";
-              e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.2)";
+              e.currentTarget.style.transform = "scale(1.05)";
+              e.currentTarget.style.boxShadow = "0 10px 25px rgba(0,0,0,0.2)";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = "scale(1)";
-              e.currentTarget.style.boxShadow = "0 4px 15px rgba(0,0,0,0.1)";
+              e.currentTarget.style.boxShadow = "0 5px 20px rgba(0,0,0,0.1)";
             }}
           >
-            <div style={{ fontSize: "40px", marginBottom: "15px" }}>{s.icon}</div>
-            <h3 style={{ marginBottom: "10px", color: "#1976d2" }}>{s.name}</h3>
-            <p style={{ color: "#555", fontSize: "0.95rem" }}>{s.desc}</p>
-            <p style={{ fontWeight: "bold", color: "#007bff", marginTop: "10px" }}>{s.price}</p>
+            <div style={{ fontSize: "45px", marginBottom: "15px" }}>{s.icon}</div>
+            <h3 style={{ color: "#1976d2", fontWeight: "600" }}>{s.name}</h3>
+            <p style={{ color: "#555", fontSize: "0.95rem", marginTop: "10px" }}>{s.desc}</p>
+            <p style={{ fontWeight: "bold", color: "#0d47a1", marginTop: "15px" }}>
+              {s.price}
+            </p>
+            <button
+              style={{
+                marginTop: "15px",
+                backgroundColor: "#1976d2",
+                color: "white",
+                border: "none",
+                borderRadius: "8px",
+                padding: "8px 16px",
+                cursor: "pointer",
+                fontWeight: "bold",
+              }}
+            >
+              Available Service Providers
+            </button>
           </div>
         ))}
       </div>

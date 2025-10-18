@@ -1,94 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import "./Navbar.css";
 
 function Navbar() {
   const location = useLocation();
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // demo toggle
+
+  const handleLogin = () => setIsLoggedIn(true);
+  const handleLogout = () => setIsLoggedIn(false);
 
   return (
-    <nav
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "12px 30px",
-        backgroundColor: "#1976d2",
-        color: "white",
-        flexWrap: "wrap",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-      }}
-    >
-      <div style={{ fontSize: "1.8rem", fontWeight: "bold" }}>
-        <Link to="/" style={{ textDecoration: "none", color: "white" }}>
+    <nav className="navbar">
+      <div className="navbar-logo">
+        <Link to="/" className="logo-link">
           WorkLink
         </Link>
       </div>
 
-      <div style={{ display: "flex", gap: "20px" }}>
+      <div className="navbar-links">
         <Link
           to="/"
-          style={{
-            color: location.pathname === "/" ? "#ffeb3b" : "white",
-            textDecoration: "none",
-            fontWeight: "500",
-          }}
+          className={location.pathname === "/" ? "active-link" : ""}
         >
           Home
         </Link>
         <Link
-          to="/services"
-          style={{
-            color: location.pathname === "/services" ? "#ffeb3b" : "white",
-            textDecoration: "none",
-            fontWeight: "500",
-          }}
+          to="/services/explorer"
+          className={location.pathname === "/services/explorer" ? "active-link" : ""}
         >
           Services
         </Link>
-        <Link
+        {/* <Link
           to="/dashboard"
-          style={{
-            color: location.pathname === "/dashboard" ? "#ffeb3b" : "white",
-            textDecoration: "none",
-            fontWeight: "500",
-          }}
+          className={location.pathname === "/dashboard" ? "active-link" : ""}
         >
           Dashboard
-        </Link>
+        </Link> */}
       </div>
 
-      <div>
-        <Link to="/login">
-          <button
-            style={{
-              marginLeft: "10px",
-              padding: "8px 15px",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-              fontWeight: "bold",
-              backgroundColor: "#4caf50",
-              color: "white",
-            }}
-          >
-            Login
+      <div className="navbar-buttons">
+        {!isLoggedIn ? (
+          <>
+            <Link to="/login">
+              <button className="btn-login" onClick={handleLogin}>
+                Login
+              </button>
+            </Link>
+            <Link to="/register">
+              <button className="btn-register">Register</button>
+            </Link>
+          </>
+        ) : (
+          <button className="btn-logout" onClick={handleLogout}>
+            Logout
           </button>
-        </Link>
-        <Link to="/register">
-          <button
-            style={{
-              marginLeft: "10px",
-              padding: "8px 15px",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-              fontWeight: "bold",
-              backgroundColor: "#ffc107",
-              color: "black",
-            }}
-          >
-            Register
-          </button>
-        </Link>
+        )}
       </div>
     </nav>
   );
